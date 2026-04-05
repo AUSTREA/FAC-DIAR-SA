@@ -1,11 +1,11 @@
 // funciones/media.js
 
 function volverPanel() {
-  window.location.href = "../index.html";
+  window.location.href = "index.html";
 }
 
 function irCarta() {
-  window.location.href = "../FACTURA_CARTA/carta.html";
+  window.location.href = "medi.html";
 }
 
 function cargarXML() {
