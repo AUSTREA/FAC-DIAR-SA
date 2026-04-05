@@ -3,10 +3,10 @@ body {
   background: #f4f4f9;
   margin: 0;
   padding: 0;
-  height: 100vh; /* altura completa */
+  height: 100vh;
   display: flex;
-  justify-content: center; /* centra horizontal */
-  align-items: center;     /* centra vertical */
+  justify-content: center;
+  align-items: center;
 }
 
 .panel {
@@ -19,14 +19,26 @@ body {
 
 h1 {
   color: #333;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
-button {
-  background-color: #007BFF; /* azul corporativo */
+.logo {
+  margin: 20px 0;
+}
+
+.logo img {
+  max-width: 200px; /* ajusta tamaño del logo */
+}
+
+.acciones {
+  margin-top: 20px;
+}
+
+.acciones button {
+  background-color: #007BFF;
   color: white;
   border: none;
-  padding: 15px 30px;
+  padding: 12px 24px;
   margin: 10px;
   font-size: 16px;
   border-radius: 8px;
@@ -34,7 +46,7 @@ button {
   transition: 0.3s;
 }
 
-button:hover {
-  background-color: #0056b3; /* azul más oscuro */
+.acciones button:hover {
+  background-color: #0056b3;
   transform: scale(1.05);
 }
