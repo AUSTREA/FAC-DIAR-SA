@@ -1,20 +1,27 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f9;
+  font-family: 'Times New Roman', Times, serif;
   margin: 0;
   padding: 0;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  /* Fondo degradado premium */
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+
+  /* Opcional: imagen de textura arquitectónica */
+  background-image: url('fondo-arquitectura.png'); /* pon tu imagen aquí */
+  background-size: cover;
+  background-blend-mode: overlay;
 }
 
 .panel {
   text-align: center;
-  background: #fff;
+  background: rgb(255, 255, 255); /* semi-transparente para elegancia */
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
 h1 {
@@ -49,4 +56,20 @@ h1 {
 .acciones button:hover {
   background-color: #0056b3;
   transform: scale(1.05);
+}
+.empresa::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: #007BFF;
+  margin: 10px auto;
+  border-radius: 2px;
+}
+
+.subtitulo {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 30px;
+  font-style: italic;
 }
