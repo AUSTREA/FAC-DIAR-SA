@@ -3,20 +3,23 @@ body {
   background: #f4f4f9;
   margin: 0;
   padding: 20px;
+  display: flex;
+  justify-content: center; /* centra horizontal */
+  align-items: flex-start; /* alinea arriba */
 }
 
 .factura {
-  width: 21.6cm;   /* ancho carta */
-  height: 27.9cm;  /* alto carta */
-  margin: auto;
+  width: 21.6cm;   /* ancho media carta */
+  height: 14cm;    /* alto media carta */
   background: #fff;
-  padding: 25px;
+  padding: 20px;
   border: 1px solid #000;
   box-sizing: border-box;
+  position: relative; /* para posicionar botones dentro */
 }
 
 .encabezado, .cliente, .footer {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 h2, h3 {
@@ -26,7 +29,7 @@ h2, h3 {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 table, th, td {
@@ -34,7 +37,7 @@ table, th, td {
 }
 
 th, td {
-  padding: 8px;
+  padding: 6px;
   text-align: center;
 }
 
@@ -48,17 +51,21 @@ th, td {
   margin-top: 10px;
 }
 
+/* Botones alineados a la izquierda */
 .acciones {
-  text-align: center;
-  margin-top: 25px;
+  position: absolute;
+  left: 20px;
+  bottom: 20px; /* pegados al borde inferior izquierdo */
+  display: flex;
+  flex-direction: column; /* uno debajo del otro */
+  gap: 10px;
 }
 
 .acciones button {
   background: #007BFF;
   color: #fff;
   border: none;
-  padding: 10px 20px;
-  margin: 5px;
+  padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
 }
