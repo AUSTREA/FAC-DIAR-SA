@@ -8,9 +8,20 @@
 <body>
   <div class="panel">
     <h1>Selecciona el formato de factura</h1>
-    <button onclick="abrirFactura('media.html')">Factura Carta</button>
-    <button onclick="abrirFactura('carta.html')">Factura Media Carta</button>
+
+    <!-- Espacio para el logo -->
+    <div class="logo">
+      <!-- Aquí insertas tu imagen -->
+      <img src="logo.png" alt="Logo DIAR-S.A.">
+    </div>
+
+    <!-- Botones abajo -->
+    <div class="acciones">
+      <button onclick="abrirFactura('carta.html')">Factura Carta</button>
+      <button onclick="abrirFactura('media.html')">Factura Media Carta</button>
+    </div>
   </div>
+
   <script src="index.js"></script>
 </body>
 </html>
