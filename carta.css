@@ -1,0 +1,68 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f9;
+  margin: 0;
+  padding: 20px;
+}
+
+.factura {
+  width: 21.6cm;   /* ancho media carta */
+  height: 14cm;    /* alto media carta */
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border: 1px solid #000;
+  box-sizing: border-box;
+}
+
+.encabezado, .cliente, .footer {
+  margin-bottom: 15px;
+}
+
+h2, h3 {
+  margin: 5px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+}
+
+table, th, td {
+  border: 1px solid #000;
+}
+
+th, td {
+  padding: 6px;
+  text-align: center;
+}
+
+.total {
+  text-align: right;
+  font-size: 16px;
+}
+
+.literal {
+  font-style: italic;
+  margin-top: 10px;
+}
+
+.acciones {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.acciones button {
+  background: #007BFF;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.acciones button:hover {
+  background: #0056b3;
+}
