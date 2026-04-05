@@ -1,1 +1,150 @@
-//sdfs
+body{
+    background:#dcdcdc;
+    font-family: Arial, sans-serif;
+}
+
+/* FACTURA FORMATO HORIZONTAL COMPACTA */
+.factura{
+    width: 850px;
+    height: 550px;
+    background:white;
+    margin:10px auto;
+    padding:12px 15px;
+    box-sizing:border-box;
+    position:relative;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom: 6px;
+}
+
+.logo{
+    width: 200px;        /* un ancho razonable */
+    height: 60px;        /* alto proporcional */
+    border:1px dashed #999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;      /* más visible para texto si no hay imagen */
+}
+
+.titulo{
+    background:#3c4c7a;
+    color:white;
+    padding:6px 12px;
+    border-radius:6px;
+    font-weight:bold;
+    flex-grow: 1;
+    margin: 0 12px;
+    text-align: center;
+    font-size: 14px;
+}
+
+
+
+/* EMPRESA */
+.empresa{
+    text-align:center;
+    margin-top:0;
+    margin-bottom: 6px;
+    font-size:11px;
+}
+
+/* FECHA */
+.fecha{
+    background:#3c4c7a;
+    color:white;
+    width:140px;
+    padding:6px;
+    text-align:center;
+    border-radius:6px;
+    margin:8px 0 8px auto;
+    font-size:11px;
+}
+
+/* CLIENTE */
+.cliente{
+    border:2px solid #3c4c7a;
+    padding:8px 10px;
+    font-size:11px;
+    margin-bottom: 10px;
+}
+
+.direccion{
+    margin-top:8px;
+}
+
+/* TABLA */
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:11px;
+}
+
+th{
+    background:#3c4c7a;
+    color:white;
+    padding:6px;
+}
+
+td{
+    border:1px solid #3c4c7a;
+    padding:6px;
+}
+
+.desc{
+    height: 50px;
+}
+
+/* Letras total fila */
+.letras{
+    font-size:10px;
+}
+
+/* Total fila */
+.total-label{
+    text-align:center;
+    font-weight:bold;
+}
+
+.total{
+    font-weight:bold;
+}
+
+/* FOOTER */
+.footer{
+    display:flex;
+    margin-top:12px;
+}
+
+.qr{
+    width:100px;
+    height:100px;
+    border:2px solid black;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink: 0;
+}
+
+.info-extra{
+    margin-left:15px;
+    font-size:10px;
+    align-self: center;
+}
+
+/* GRACIAS */
+.gracias{
+    border:1px solid #3c4c7a;
+    margin-top:12px;
+    padding:4px;
+    font-size:11px;
+    text-align: center;
+}
