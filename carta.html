@@ -2,65 +2,122 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Factura Media Carta</title>
-   <link rel="stylesheet" href="carta.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factura DiAR</title>
+  <link rel="stylesheet" href="carta.css">
+  <script src="carta.js" defer></script>
 </head>
 <body>
-  <div class="factura">
-    <div class="encabezado">
-      <h2>DIAR DISEÑO ARQUITECTÓNICO</h2>
-      <p>HESSLER JODWIN, TALÉ QUEVEDO</p>
-      <p>NIT: __________</p>
-      <p>Dirección: __________________________</p>
-      <h3>Factura Electrónica</h3>
-      <p>No. __________ | Serie: __________</p>
-      <p>Fecha: ____/____/______</p>
-    </div>
 
-    <div class="cliente">
-      <p><strong>Nombre:</strong> __________________________</p>
-      <p><strong>NIT:</strong> __________________________</p>
-      <p><strong>Dirección:</strong> __________________________</p>
-    </div>
+  <div class="layout">
+    <!-- PANEL IZQUIERDO -->
+    <div class="acciones">
+      <h1>FACTURA DIAR</h1>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Cantidad</th>
-          <th>Descripción</th>
-          <th>P. Unitario</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td>Ejemplo servicio</td>
-          <td>Q0.00</td>
-          <td>Q0.00</td>
-        </tr>
-      </tbody>
-    </table>
+      <!-- Botón que activa el input -->
+      <button onclick="document.getElementById('archivoXML').click()">CARGAR</button>
 
-    <p class="literal">__________________________</p>
-    <p class="total"><strong>Total: Q__________</strong></p>
+      <!-- Input oculto que se activa con el botón -->
+      <input type="file" id="archivoXML" accept=".xml" style="display:none" onchange="cargarXML()">
 
-    <div class="footer">
-      <p>Sujeto a pagos trimestrales ISR</p>
-      <p>Autorización: __________________________</p>
-      <p>Superintendencia de Administración Tributaria NIT: __________</p>
-      <p>Gracias por su compra!</p>
-      <div class="logo">
-        <!-- Aquí dejas espacio para el logo FEL -->
+  <button onclick="descargarPDF()">DESCARGAR</button>
+
+      <div class="qr-panel">QR DIAR <APARTE></APARTE>
+           <img src="QRDIAR.png" alt="QR DIAR" class="qr-img">
+
       </div>
     </div>
 
-    <div class="acciones">
-      < <button onclick="window.location.href='index.html'">Volver al Panel</button>
-      <button onclick="window.location.href='media.html">Ir a Factura Carta</button>
-    </div>
-    <script src= "carta.js"></scrip> 
+    <!-- FACTURA DERECHA -->
+    <div class="factura" id="factura">
+      <!-- HEADER -->
+      <div class="header">
+        <div>
+          <div class="linea-superior"></div>
+          <div class="logo">
+            <img src="DIAR.png" alt="DiAR Arquitectura" />
+            <p></p>
+          </div>
+        </div>
+        <div class="titulo">
+          <h1>FACTURA</h1>
+          <p id="autorizacion">No. Autorización: ______</p>
+          <p id="fecha">Fecha: ______</p>
+          <p id="hora">Hora: ______</p>
+        </div>
+      </div>
 
+      <!-- EMPRESA -->
+      <div class="empresa">
+  <strong id="nombreEmisor">DiAR Arquitectura Publicitaria</strong><br>
+  NIT: <span id="nitEmisor">1234567-8</span><br>
+  Dirección: <span id="direccionEmisor">3 AVENIDA 5-04 COLONIA SAN JOSE, Zona 2, VILLA NUEVA, GUATEMALA</span>
+</div>
+
+
+
+      <!-- CLIENTE -->
+      <div class="cliente">
+  <strong>DATOS DEL CLIENTE</strong><br><br>
+  Nombre: <span id="nombreReceptor">N/A</span><br>
+  NIT: <span id="nitReceptor">N/A</span><br>
+  Dirección: <span id="direccionReceptor">N/A</span>
+</div>
+
+      <!-- TABLA -->
+      <table id="tabla-servicios">
+        <thead>
+          <tr>
+            <th>CANT.</th>
+            <th>DESCRIPCIÓN DEL SERVICIO ARQUITECTÓNICO</th>
+            <th>COSTO (Q)</th>
+            <th>SUBTOTAL (Q)</th>
+          </tr>
+        </thead>
+        <tbody id="items">
+          <tr>
+            <td><input type="number" class="cant"></td>
+            <td><input type="text" class="desc"></td>
+            <td><input type="number" class="costo"></td>
+            <td class="subtotal"></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- TOTALES -->
+      <div class="totales">
+        <table>
+          <tr>
+            <td>Subtotal</td>
+            <td id="subtotal">Q 0.00</td>
+          </tr>
+          <tr>
+            <td>IVA 12%</td>
+            <td id="iva">Q 0.00</td>
+          </tr>
+          <tr class="total-final">
+            <td>Total</td>
+            <td id="total">Q 0.00</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="letras">
+        Total en letras: <span id="total-letras">Cero quetzales</span>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <div class="qr" id="qr">OK SAT</div>
+        <div class="firma">
+          <div class="firma-linea"></div>
+          Firma autorizada
+        </div>
+      </div>
+    </div>
   </div>
+
+
+  <!-- qr de la-->
 </body>
 </html>
