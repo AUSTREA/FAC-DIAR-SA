@@ -1,6 +1,13 @@
-// funciones/index.js
+// funciones/media.js
 
-function abrirFactura(ruta) {
-  // Redirige directamente al archivo HTML indicado
-  window.location.href = ruta;
+function volverPanel() {
+  window.location.href = "index.html";
+}
+
+function irCarta() {
+  window.location.href = "carta.html";
+}
+
+function cargarXML() {
+  alert("Función de carga XML pendiente de implementar.");
 }
