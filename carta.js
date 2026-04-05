@@ -5,7 +5,7 @@ function volverPanel() {
 }
 
 function irCarta() {
-  window.location.href = "medi.html";
+  window.location.href = "media.html";
 }
 
 function cargarXML() {
