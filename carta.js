@@ -245,14 +245,20 @@ function descargarPDF() {
       <title>Factura</title>
       <link rel="stylesheet" href="carta.css">
     </head>
-    <body>${factura.outerHTML}</body>
+    <body>
+      ${factura.outerHTML}
+    </body>
     </html>
   `);
 
   ventana.document.close();
 
+  // Esperar a que cargue completamente el contenido
   ventana.onload = function () {
-    ventana.print();
-    ventana.close();
+    setTimeout(() => {
+      ventana.focus();
+      ventana.print();
+      ventana.close();
+    }, 300); // pequeño delay para asegurar carga de CSS
   };
 }
