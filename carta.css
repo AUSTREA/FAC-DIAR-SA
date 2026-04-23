@@ -176,15 +176,24 @@ td {
   align-items: center;
 }
 
+/* CONTENEDOR QR (NO SE MUEVE) */
 .qr {
-  width: 110px;
-  height: 110px;
+  width: 160px;
+  height: 160px;
   border: 1px solid #bbb;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
-  color: #777;
+  overflow: hidden; /* 🔥 CLAVE */
+  position: relative;
+}
+
+/* CANVAS / IMG DEL QR */
+.qr canvas,
+.qr img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 .firma {
