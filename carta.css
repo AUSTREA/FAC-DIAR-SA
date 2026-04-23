@@ -51,7 +51,7 @@ body {
   position: relative;
   display: inline-block;
   padding: 0 8px;
-  background-color: #0a3d62; /* azul oscuro elegante */
+  background-color: #0a3d62;
   color: white;
   border-radius: 3px;
 }
@@ -176,7 +176,7 @@ td {
   align-items: center;
 }
 
-/* CONTENEDOR QR (NO SE MUEVE) */
+/* QR */
 .qr {
   width: 160px;
   height: 160px;
@@ -184,11 +184,10 @@ td {
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden; /* 🔥 CLAVE */
+  overflow: hidden;
   position: relative;
 }
 
-/* CANVAS / IMG DEL QR */
 .qr canvas,
 .qr img {
   max-width: 100%;
@@ -208,7 +207,6 @@ td {
   margin: 60px auto 5px;
 }
 
-/* DETALLE ESTÉTICO */
 .linea-superior {
   width: 50px;
   height: 3px;
@@ -276,63 +274,45 @@ td {
   border: 1px solid #ccc;
 }
 
-/* Impresión */
+/* ============================= */
+/* 🔥 SOLUCIÓN IMPRESIÓN CARTA */
+/* ============================= */
+
 @media print {
+
   @page {
     size: letter;
-    margin: 1.5cm;
+    margin: 0;
+  }
+
+  html, body {
+    width: 21.59cm;
+    height: 27.94cm;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
   }
 
   body {
-    margin: 0;
-    padding: 0;
-    background: white;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    color-adjust: exact;
-  }
-
-  .factura {
-    width: 21.59cm;   /* ancho carta */
-    min-height: 27.94cm; /* alto carta */
-    margin: 0 auto;
-    padding: 1.5cm;
-    box-sizing: border-box;
-    border: none;
-    background: white;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    color-adjust: exact;
   }
 
   .acciones {
-    display: none;
+    display: none !important;
   }
-}
 
-.qr-panel {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #fff;
-  border: 2px solid #000;
-  width: 100%;
-  text-align: center;
-}
+  .factura {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 1.2cm !important;
+    box-sizing: border-box !important;
+    border: none !important;
+  }
 
-.qr-img {
-  width: 150px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-}
-#tabla-servicios td, #tabla-servicios th {
-  border: 1px solid #000;
-  padding: 6px;
-}
-#tabla-servicios td:first-child {
-  background-color: #dbe9f7;
-  color: #0a3d62;
-  font-weight: 600;
-  border-right: 2px solid #0a3d62;
-  text-align: center;
+  table, tr, td, div {
+    page-break-inside: avoid !important;
+  }
 }
