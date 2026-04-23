@@ -1,129 +1,239 @@
-// Fecha y hora automáticas
+// ==========================
+// LIMPIEZA DE NÚMEROS
+// ==========================
+function limpiarNumero(valor) {
+  if (typeof valor === "number") return valor;
+
+  return parseFloat(
+    String(valor).replace(/[Q,\s]/g, "")
+  ) || 0;
+}
+
+// ==========================
+// FECHA Y HORA
+// ==========================
 window.onload = () => {
   const fecha = new Date();
+
   document.getElementById("fecha").textContent =
-    `Fecha: ${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}`;
+    `Fecha: ${fecha.toLocaleDateString("es-GT")}`;
+
   document.getElementById("hora").textContent =
-    `Hora: ${fecha.getHours()}:${fecha.getMinutes().toString().padStart(2, '0')}`;
+    `Hora: ${fecha.toLocaleTimeString("es-GT")}`;
 };
 
-// Recalcular totales al escribir
-document.addEventListener("input", calcularFactura);
-
-function calcularFactura() {
-  const filas = document.querySelectorAll("#tabla-servicios tbody tr");
-  let subtotalGeneral = 0;
-
-  filas.forEach(fila => {
-    const inputCant = fila.querySelector(".cant");
-    const inputCosto = fila.querySelector(".costo");
-
-    let cant, costo;
-
-    if (inputCant && inputCosto) {
-      // Modo manual con inputs
-      cant = parseFloat(inputCant.value) || 0;
-      costo = parseFloat(inputCosto.value) || 0;
-      const subtotal = cant * costo;
-      fila.querySelector(".subtotal").textContent = subtotal ? formatoQuetzal(subtotal) : "";
-      subtotalGeneral += subtotal;
-    } else {
-      // Modo XML con texto plano
-     const textoCant = parseFloat(fila.cells[0]?.textContent) || 0;
-const textoCosto = fila.cells[2]?.textContent || "";
-const costo = parseFloat(textoCosto.replace("Q", "").replace(",", "").trim()) || 0;
-const subtotal = textoCant * costo;
-subtotalGeneral += subtotal;
-
-    }
+// ==========================
+// FORMATO QUETZALES
+// ==========================
+function formatoQuetzal(num) {
+  return "Q " + num.toLocaleString("es-GT", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
   });
-
-  const iva = subtotalGeneral * 0.12;
-  const total = subtotalGeneral + iva;
-
-  document.getElementById("subtotal").textContent = formatoQuetzal(subtotalGeneral);
-  document.getElementById("iva").textContent = formatoQuetzal(iva);
-  document.getElementById("total").textContent = formatoQuetzal(total);
-  document.getElementById("total-letras").textContent = numeroALetras(total);
 }
 
-
-// Convierte número a letras (simplificado)
+// ==========================
+// 🔥 LETRAS CON CENTAVOS
+// ==========================
 function numeroALetras(num) {
-  if (num === 0) return "Cero quetzales";
-  return num.toFixed(2) + " quetzales"; // Puedes integrar una librería más adelante
+  const unidades = ["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"];
+
+  const especiales = {
+    10: "diez", 11: "once", 12: "doce", 13: "trece", 14: "catorce", 15: "quince"
+  };
+
+  const decenas = ["", "", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"];
+
+  const centenas = ["", "ciento", "doscientos", "trescientos", "cuatrocientos",
+    "quinientos", "seiscientos", "setecientos", "ochocientos", "novecientos"];
+
+  function convertir(n) {
+    if (n < 10) return unidades[n];
+    if (n >= 10 && n < 16) return especiales[n];
+    if (n < 20) return "dieci" + unidades[n - 10];
+    if (n === 20) return "veinte";
+    if (n < 30) return "veinti" + unidades[n - 20];
+
+    if (n < 100) {
+      const d = Math.floor(n / 10);
+      const u = n % 10;
+      return decenas[d] + (u ? " y " + unidades[u] : "");
+    }
+
+    if (n === 100) return "cien";
+
+    if (n < 1000) {
+      const c = Math.floor(n / 100);
+      const r = n % 100;
+      return centenas[c] + (r ? " " + convertir(r) : "");
+    }
+
+    if (n < 1000000) {
+      const m = Math.floor(n / 1000);
+      const r = n % 1000;
+      let texto = (m === 1 ? "mil" : convertir(m) + " mil");
+      return texto + (r ? " " + convertir(r) : "");
+    }
+
+    return "";
+  }
+
+  const entero = Math.floor(num);
+  const centavos = Math.round((num - entero) * 100);
+
+  let letras = convertir(entero);
+
+  // ajustes
+  letras = letras.replace("uno mil", "mil");
+  letras = letras.replace(/uno$/, "un");
+
+  letras = letras.charAt(0).toUpperCase() + letras.slice(1);
+
+  // 🔥 centavos en letras
+  if (centavos === 0) {
+    return `${letras} quetzales exactos`;
+  }
+
+  const centavosTexto = convertir(centavos);
+
+  return `${letras} quetzales con ${centavosTexto} centavos`;
 }
 
-// Cargar datos desde XML
+// ==========================
+// CARGAR XML
+// ==========================
 function cargarXML() {
   const input = document.getElementById("archivoXML");
   const file = input.files[0];
-  if (!file) return alert("Selecciona un archivo XML");
+
+  if (!file) {
+    alert("Selecciona un archivo XML");
+    return;
+  }
 
   const reader = new FileReader();
+
   reader.onload = function (e) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(e.target.result, "text/xml");
 
-    // Datos generales
-    const fechaHora = xmlDoc.getElementsByTagName("dte:DatosGenerales")[0]?.getAttribute("FechaHoraEmision") || "";
+    if (xmlDoc.getElementsByTagName("parsererror").length > 0) {
+      alert("XML inválido");
+      return;
+    }
+
+    const fechaHora =
+      xmlDoc.getElementsByTagName("dte:DatosGenerales")[0]
+        ?.getAttribute("FechaHoraEmision") || "";
+
     const [fecha, hora] = fechaHora.split("T");
+
+    const auth =
+      xmlDoc.getElementsByTagName("dte:NumeroAutorizacion")[0]?.textContent || "";
+
     document.getElementById("autorizacion").textContent =
-      "Autorización: " + xmlDoc.getElementsByTagName("dte:NumeroAutorizacion")[0]?.textContent || "";
-    document.getElementById("fecha").textContent = "Fecha: " + fecha;
+      "Autorización: " + auth;
+
+    document.getElementById("fecha").textContent = "Fecha: " + (fecha || "");
     document.getElementById("hora").textContent = "Hora: " + (hora?.split("-")[0] || "");
 
-    // Emisor
-   //pendiente por si lo queire el hessler
-    // Receptor
     const receptor = xmlDoc.getElementsByTagName("dte:Receptor")[0];
-document.getElementById("nombreReceptor").textContent = receptor?.getAttribute("NombreReceptor") || "—";
-document.getElementById("nitReceptor").textContent = receptor?.getAttribute("IDReceptor") || "—";
-const municipio = xmlDoc.getElementsByTagName("dte:Municipio")[0]?.textContent || "";
-const departamento = xmlDoc.getElementsByTagName("dte:Departamento")[0]?.textContent || "";
-const pais = xmlDoc.getElementsByTagName("dte:Pais")[0]?.textContent || "";
-document.getElementById("direccionReceptor").textContent = `${municipio}, ${departamento}, ${pais}`;
 
+    document.getElementById("nombreReceptor").textContent =
+      receptor?.getAttribute("NombreReceptor") || "—";
 
-    // Servicios
-const items = xmlDoc.getElementsByTagName("dte:Item");
-const tbody = document.getElementById("items");
-tbody.innerHTML = ""; // Limpia la tabla
+    document.getElementById("nitReceptor").textContent =
+      receptor?.getAttribute("IDReceptor") || "—";
 
-for (let i = 0; i < items.length; i++) {
-  const cantidad = items[i].getElementsByTagName("dte:Cantidad")[0]?.textContent || "";
-  const descripcion = items[i].getElementsByTagName("dte:Descripcion")[0]?.textContent || "";
-  const precio = items[i].getElementsByTagName("dte:PrecioUnitario")[0]?.textContent || "";
-  const subtotal = (parseFloat(cantidad) * parseFloat(precio)).toFixed(2);
+    const municipio = xmlDoc.getElementsByTagName("dte:Municipio")[0]?.textContent || "";
+    const departamento = xmlDoc.getElementsByTagName("dte:Departamento")[0]?.textContent || "";
+    const pais = xmlDoc.getElementsByTagName("dte:Pais")[0]?.textContent || "";
 
-const fila = `<tr>
-  <td>${cantidad}</td>
-  <td>${descripcion}</td>
-  <td>${formatoQuetzal(parseFloat(precio))}</td>
-  <td class="subtotal">${formatoQuetzal(parseFloat(subtotal))}</td>
-</tr>`;
-  tbody.innerHTML += fila;
-}
+    document.getElementById("direccionReceptor").textContent =
+      `${municipio}, ${departamento}, ${pais}`;
 
+    const items = xmlDoc.getElementsByTagName("dte:Item");
+    const tbody = document.getElementById("items");
 
-    // Totales
-    const iva = xmlDoc.getElementsByTagName("dte:TotalImpuesto")[0]?.getAttribute("TotalMontoImpuesto") || "0.00";
-    const total = xmlDoc.getElementsByTagName("dte:GranTotal")[0]?.textContent || "0.00";
+    tbody.innerHTML = "";
 
-    document.getElementById("iva").textContent = formatoQuetzal(parseFloat(iva));
-document.getElementById("total").textContent = formatoQuetzal(parseFloat(total));
-    const totalLetrasXML = xmlDoc.getElementsByTagName("dte:TextoTotal")[0]?.textContent;
-document.getElementById("total-letras").textContent = totalLetrasXML || numeroALetras(parseFloat(total));
+    for (let i = 0; i < items.length; i++) {
+      const cantidad = items[i].getElementsByTagName("dte:Cantidad")[0]?.textContent || 0;
+      const descripcion = items[i].getElementsByTagName("dte:Descripcion")[0]?.textContent || "";
+      const precio = items[i].getElementsByTagName("dte:PrecioUnitario")[0]?.textContent || 0;
 
+      const subtotal = parseFloat(cantidad) * parseFloat(precio);
 
-    // QR SAT (simulado como imagen)
-    const qr = document.getElementById("qr");
-    if (qr) qr.innerHTML = `<img src="PICTURES/qr-sat.png" alt="QR SAT" style="width:100px;">`;
+      tbody.innerHTML += `
+        <tr>
+          <td>${cantidad}</td>
+          <td>${descripcion}</td>
+          <td>${formatoQuetzal(parseFloat(precio))}</td>
+          <td class="subtotal">${formatoQuetzal(subtotal)}</td>
+        </tr>
+      `;
+    }
+
+    const subtotalXML = limpiarNumero(
+      xmlDoc.getElementsByTagName("dte:MontoGravable")[0]?.textContent
+    ) || 0;
+
+    const ivaXML = limpiarNumero(
+      xmlDoc.getElementsByTagName("dte:MontoImpuesto")[0]?.textContent
+    ) || 0;
+
+    const totalXML = limpiarNumero(
+      xmlDoc.getElementsByTagName("dte:GranTotal")[0]?.textContent
+    ) || 0;
+
+    document.getElementById("subtotal").textContent =
+      formatoQuetzal(subtotalXML);
+
+    document.getElementById("iva").textContent =
+      formatoQuetzal(ivaXML);
+
+    document.getElementById("total").textContent =
+      formatoQuetzal(totalXML);
+
+    document.getElementById("total-letras").textContent =
+      numeroALetras(Number(totalXML.toFixed(2)));
+
+    const emisor =
+      xmlDoc.getElementsByTagName("dte:Emisor")[0]?.getAttribute("NITEmisor");
+
+    const receptorQR = receptor?.getAttribute("IDReceptor");
+
+    const totalQR = Number(totalXML).toFixed(2);
+
+    const uuid =
+      xmlDoc.getElementsByTagName("dte:NumeroAutorizacion")[0]?.textContent?.trim();
+
+    if (uuid && emisor && receptorQR && totalQR) {
+
+      const linkQR =
+        `https://felpub.c.sat.gob.gt/verificador-web/publico/vistas/verificacionDte.jsf?tipo=autorizacion&numero=${uuid}&emisor=${emisor}&receptor=${receptorQR}&monto=${totalQR}`;
+
+      const qrDiv = document.getElementById("qr");
+      qrDiv.innerHTML = "";
+
+      new QRCode(qrDiv, {
+        text: linkQR,
+        width: 180,
+        height: 180,
+        correctLevel: QRCode.CorrectLevel.L
+      });
+
+      qrDiv.style.cursor = "pointer";
+      qrDiv.onclick = () => window.open(linkQR, "_blank");
+    }
   };
+
   reader.readAsText(file);
 }
 
-//descargar pdf
+// ==========================
+// PDF
+// ==========================
 function descargarPDF() {
   const factura = document.getElementById("factura");
 
@@ -134,112 +244,15 @@ function descargarPDF() {
     <head>
       <title>Factura</title>
       <link rel="stylesheet" href="carta.css">
-      <style>
-        body {
-          margin: 0;
-          padding: 0;
-        }
-
-        @page {
-          size: letter;
-          margin: 0;
-        }
-
-        .factura {
-          width: 21.59cm;
-          min-height: 27.94cm;
-          padding: 1.5cm;
-          box-sizing: border-box;
-        }
-      </style>
     </head>
-    <body>
-      ${factura.outerHTML}
-    </body>
+    <body>${factura.outerHTML}</body>
     </html>
   `);
 
   ventana.document.close();
 
   ventana.onload = function () {
-    ventana.focus();
     ventana.print();
     ventana.close();
   };
-}
-// Convierte número a letras con miles y centavos
-function numeroALetras(num) {
-  const unidades = ["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"];
-  const decenas = ["", "", "veinte", "treinta", "cuarenta", "cincuenta", "sesenta", "setenta", "ochenta", "noventa"];
-  const especiales = {
-    10: "diez", 11: "once", 12: "doce", 13: "trece", 14: "catorce", 15: "quince",
-    16: "dieciséis", 17: "diecisiete", 18: "dieciocho", 19: "diecinueve"
-  };
-
-  function convertirParteEntera(n) {
-    if (n === 0) return "cero";
-    let resultado = "";
-
-    if (n >= 1000000) {
-      const millones = Math.floor(n / 1000000);
-      resultado += convertirParteEntera(millones) + " millón" + (millones > 1 ? "es " : " ");
-      n %= 1000000;
-    }
-
-    if (n >= 1000) {
-      const miles = Math.floor(n / 1000);
-      resultado += (miles === 1 ? "mil " : convertirParteEntera(miles) + " mil ");
-      n %= 1000;
-    }
-
-    if (n >= 100) {
-      const centenas = Math.floor(n / 100);
-      resultado += (centenas === 1 && n % 100 === 0) ? "cien " : ["", "ciento", "doscientos", "trescientos", "cuatrocientos", "quinientos", "seiscientos", "setecientos", "ochocientos", "novecientos"][centenas] + " ";
-      n %= 100;
-    }
-
-    if (n >= 10 && n <= 19) {
-      resultado += especiales[n] + " ";
-    } else {
-      const dec = Math.floor(n / 10);
-      const uni = n % 10;
-      resultado += decenas[dec];
-      if (dec > 1 && uni > 0) resultado += " y ";
-      resultado += unidades[uni] + " ";
-    }
-
-    return resultado.trim();
-  }
-
-  const entero = Math.floor(num);
-  const centavos = Math.round((num - entero) * 100);
-
-  return `${convertirParteEntera(entero)} quetzales con ${convertirParteEntera(centavos)} centavos`;
-}
-
-function formatoQuetzal(num) {
-  return "Q " + num.toLocaleString("es-GT", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-}
-function agregarFila(cantidad = "", descripcion = "", precio = "") {
-  const tbody = document.querySelector("#tabla-servicios tbody");
-  
-  // Calcular subtotal
-  const subtotal = (parseFloat(cantidad) || 0) * (parseFloat(precio) || 0);
-
-  // Crear fila
-  const fila = document.createElement("tr");
-
-  fila.innerHTML = `
-    <td class="cantidad">${cantidad}</td>
-    <td class="descripcion">${descripcion}</td>
-    <td class="costo">${formatoQuetzal(parseFloat(precio) || 0)}</td>
-    <td class="subtotal">${formatoQuetzal(subtotal)}</td>
-  `;
-
-  tbody.appendChild(fila);
-
-  calcularFactura(); // recalcula totales automáticamente
 }
