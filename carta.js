@@ -249,29 +249,50 @@ function cargarXML() {
     document.getElementById("total-letras").textContent =
       numeroALetras(totalXML);
 
-    // CERTIFICADOR
-    const ns = "http://www.sat.gob.gt/dte/fel/0.2.0";
+    // =========================
+// CERTIFICADOR
+// =========================
 
-    const nitCertificador =
-      xmlDoc.getElementsByTagNameNS(ns, "NITCertificador")[0]?.textContent;
+// Namespace FEL SAT
+const ns = "http://www.sat.gob.gt/dte/fel/0.2.0";
 
-    document.getElementById("nitCertificador").textContent =
-      nitCertificador || "—";
+// NIT Certificador
+const nitCertificador =
+  xmlDoc.getElementsByTagNameNS(ns, "NITCertificador")[0];
 
-    const nodoAut =
-      xmlDoc.getElementsByTagNameNS(ns, "NumeroAutorizacion")[0];
+document.getElementById("nitCertificador").textContent =
+  nitCertificador?.textContent || "—";
 
-    document.getElementById("autorizacion").textContent =
-      nodoAut?.textContent?.trim() || "—";
+// Número de autorización
+const nodoAut =
+  xmlDoc.getElementsByTagNameNS(ns, "NumeroAutorizacion")[0];
 
-    const serie = nodoAut?.getAttribute("Serie");
-    document.getElementById("serie").textContent =
-      serie || "—";
+document.getElementById("autorizacion").textContent =
+  nodoAut?.textContent?.trim() || "—";
 
-    const numero = nodoAut?.getAttribute("Numero");
-    document.getElementById("numero").textContent =
-      numero || "—";
+// Serie
+const serie = nodoAut?.getAttribute("Serie");
+document.getElementById("serie").textContent =
+  serie || "—";
 
+// Número
+const numero = nodoAut?.getAttribute("Numero");
+document.getElementById("numero").textContent =
+  numero || "—";
+
+
+// =========================
+// CERTIFICADOR (X509)
+// =========================
+const dsNS = "http://www.w3.org/2000/09/xmldsig#";
+
+const certificado =
+  xmlDoc.getElementsByTagNameNS(dsNS, "X509IssuerName")[0];
+
+const textoCert = certificado?.textContent?.trim() || "—";
+
+document.getElementById("certificador").textContent =
+  textoCert.replace(/^CN=/, "");
     
     // QR (FIX incluido)
     const uuid = nodoAut?.textContent?.trim();
