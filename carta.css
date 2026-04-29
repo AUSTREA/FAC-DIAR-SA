@@ -1,217 +1,24 @@
+
+/* ========================= */
+/* VARIABLES */
+/* ========================= */
+:root {
+  --azul-principal: #1f3c88;
+  --azul-secundario: #4a6fa5;
+  --azul-claro: #eaf1fb;
+  --gris-borde: #d6dde8;
+  --texto: #2c2c2c;
+}
+
+/* ========================= */
+/* BASE */
+/* ========================= */
 body {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  background: #f4f4f4;
+  font-family: 'Segoe UI', 'Times New Roman', Times, serif, sans-serif;
+  background: #eaeaea;
   margin: 0;
-  padding: 40px;
-  color: #222;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-  color-adjust: exact;
-}
-
-.factura {
-  background: #fff;
-  max-width: 900px;
-  margin: auto;
-  padding: 50px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
-  -webkit-print-color-adjust: exact;
-  print-color-adjust: exact;
-  color-adjust: exact;
-}
-
-/* HEADER */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-bottom: 1px solid #999;
-  padding-bottom: 20px;
-}
-
-.logo img {
-  max-width: 400px;
-  height: auto;
-  display: block;
-  align-items: center;
-}
-
-.titulo {
-  text-align: right;
-  flex-grow: 1;
-  padding-left: 20px;
-}
-
-.titulo h1 {
-  margin: 0;
-  font-size: 26px;
-  letter-spacing: 4px;
-  font-weight: 300;
-  position: relative;
-  display: inline-block;
-  padding: 0 8px;
-  background-color: #0a3d62;
-  color: white;
-  border-radius: 3px;
-}
-
-.titulo p {
-  margin: 4px 0;
-  font-size: 12px;
-  color: #555;
-}
-
-/* EMPRESA */
-.empresa {
-  margin-top: 25px;
-  font-size: 13px;
-  line-height: 1.6;
-  border-left: 3px solid #0a3d62;
-  padding-left: 12px;
-  color: #0a3d62;
-  font-weight: 600;
-  background: #f0f4f8;
-  border-radius: 4px;
-  padding: 12px;
-}
-
-/* CLIENTE */
-.cliente {
-  margin-top: 25px;
-  padding: 15px;
-  border: 1px solid #0a3d62;
-  font-size: 13px;
-  border-radius: 4px;
-  background: #f9fbfd;
-}
-
-.cliente strong {
-  letter-spacing: 1px;
-  font-size: 12px;
-  color: #0a3d62;
-}
-
-/* TABLA */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 30px;
-  font-size: 13px;
-}
-
-th {
-  text-align: left;
-  padding: 10px;
-  border-bottom: 2px solid #0a3d62;
-  font-weight: 600;
-  letter-spacing: 1px;
-  font-size: 12px;
-  color: #0a3d62;
-  background: #dbe9f7;
-}
-
-td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #cfd9e8;
-}
-
-#tabla-servicios td:first-child {
-  font-weight: 600;
-  color: #0a3d62;
-  text-align: center;
-  border-right: 2px solid #0a3d62;
-  background-color: #dbe9f7;
-}
-
-/* TOTALES */
-.totales {
-  margin-top: 30px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.totales table {
-  width: 280px;
-  border: 2px solid #0a3d62;
-  border-radius: 5px;
-  background: #f0f4f8;
-}
-
-.totales td {
-  padding: 8px;
-  border-bottom: 1px solid #0a3d62;
-  font-weight: 600;
-  color: #0a3d62;
-}
-
-.totales td:last-child {
-  text-align: right;
-  font-weight: 700;
-  font-size: 14px;
-}
-
-.total-final {
-  border-top: 2px solid #0a3d62;
-  font-weight: bold;
-}
-
-/* LETRAS */
-.letras {
-  margin-top: 25px;
-  font-size: 12px;
-  color: white;
-  border-radius: 5px;
-  padding: 12px;
-  background-color: #0a3d62;
-  text-align: center;
-  font-weight: 600;
-}
-
-/* FOOTER */
-.footer {
-  margin-top: 50px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* QR */
-.qr {
-  width: 160px;
-  height: 160px;
-  border: 1px solid #bbb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.qr canvas,
-.qr img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.firma {
-  text-align: center;
-  font-size: 12px;
-  color: #444;
-}
-
-.firma-linea {
-  width: 220px;
-  border-top: 1px solid #000;
-  margin: 60px auto 5px;
-}
-
-.linea-superior {
-  width: 50px;
-  height: 3px;
-  background: #0a3d62;
-  margin-bottom: 10px;
+  padding: 20px;
+  color: var(--texto);
 }
 
 .layout {
@@ -220,99 +27,333 @@ td {
   align-items: flex-start;
 }
 
-/* Panel izquierdo */
-.acciones {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #007BFF;
-  padding: 20px;
-  border-radius: 8px;
-  color: white;
+/* ========================= */
+/* PANEL */
+/* ========================= */
+.panel {
   width: 220px;
-  height: auto;
+  background: var(--azul-principal);
+  color: white;
+  padding: 15px;
+  border-radius: 10px;
+  position: sticky;
+  top: 20px;
 }
 
-.acciones h1 {
-  font-size: 20px;
+.panel h2 {
+  text-align: center;
+  font-size: 16px;
   margin-bottom: 15px;
 }
 
-.acciones button {
-  margin-bottom: 10px;
-  padding: 10px 12px;
-  font-size: 14px;
-  border: none;
-  border-radius: 4px;
+.panel button {
   width: 100%;
-  background-color: #0056b3;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  background: #2d7be5;
   color: white;
   cursor: pointer;
+  border-radius: 6px;
+  font-size: 12px;
 }
 
-.acciones button:hover {
-  background-color: #004494;
+.panel button:hover {
+  background: #1c5db6;
 }
 
-.qr-panel {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #fff;
-  border: 2px solid #000;
+.panel input {
   width: 100%;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 5px;
+  border: none;
+  font-size: 12px;
+}
+
+/* ========================= */
+/* FACTURA */
+/* ========================= */
+.factura {
+  width: 21.59cm;
+  min-height: 27.94cm;
+  background: white;
+  margin: auto;
+  padding: 1.2cm;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ========================= */
+/* HEADER */
+/* ========================= */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--azul-principal);
+  padding-bottom: 10px;
+}
+
+.logo img {
+  width: 170px;
+}
+
+.empresa {
   text-align: center;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.factura-box {
+  border: 2.5px solid var(--azul-principal);
+  border-radius: 8px;
+  padding: 20px;
+  font-size: 13px;
+  background: var(--azul-claro);
+}
+
+/* ========================= */
+/* CLIENTE */
+/* ========================= */
+.cliente-box {
+  border: 1.5px solid var(--azul-secundario);
+  border-radius: 10px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.cliente-titulo {
+  text-align: center;
+  font-weight: 600;
+  padding: 6px;
+  background: var(--azul-principal);
+  color: white;
+  font-size: 12px;
+}
+
+.cliente-body {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  font-size: 11px;
+}
+
+.cliente-col p {
+  margin: 3px 0;
+}
+
+/* ========================= */
+/* TABLA (ESTILO PRO REAL) */
+/* ========================= */
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  border: 1.5px solid var(--azul-secundario);
+  table-layout: fixed;
+}
+
+/* HEADER */
+.tabla th {
+  background: var(--azul-principal);
+  color: white;
+  padding: 7px;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+/* CELDAS */
+.tabla td {
+  padding: 6px;
+  font-size: 11px;
+  border-bottom: 1px solid var(--gris-borde);
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+/* 🔥 SOLO DESCRIPCIÓN MÁS ESPACIO */
+.tabla td:nth-child(2),
+.tabla th:nth-child(2) {
+  width: 55%;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* CANTIDAD */
+.tabla td:nth-child(1),
+.tabla th:nth-child(1) {
+  width: 10%;
+  text-align: center;
+}
+
+/* COSTO */
+.tabla td:nth-child(3),
+.tabla th:nth-child(3) {
+  width: 15%;
+  text-align: right;
+}
+
+/* SUBTOTAL */
+.tabla td:nth-child(4),
+.tabla th:nth-child(4) {
+  width: 20%;
+  text-align: right;
+}
+
+/* ZEBRA SUAVE */
+.tabla tbody tr:nth-child(even) {
+  background: #f8faff;
+}
+
+/* CUERPO FIJO */
+.tabla tbody {
+  height: 300px;
+}
+
+/* FILA RELLENO */
+.fila-relleno td {
+  height: 90%;
+  border: none;
+}
+
+/* ========================= */
+/* TOTALES */
+/* ========================= */
+
+.tabla tfoot td {
+  font-size: 8px;
+  padding: 6px;
+}
+
+.tabla tfoot {
+  border-top: 2px solid var(--azul-principal);
+}
+
+.total-final td {
+  background: var(--azul-claro);
   font-weight: bold;
 }
-
-/* Factura derecha */
-.factura {
-  flex: 1;
-  max-width: 800px;
-  background-color: #fff;
-  padding: 20px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
+/* ========================= */
+/* LETRAS */
+/* ========================= */
+.letras {
+  margin-top: 10px;
+  background: var(--azul-principal);
+  color: white;
+  text-align: center;
+  padding: 8px;
+  font-size: 11px;
+  border-radius: 5px;
 }
 
-/* ============================= */
-/* 🔥 SOLUCIÓN IMPRESIÓN CARTA */
-/* ============================= */
+/* ========================= */
+/* FOOTER */
+/* ========================= */
+.footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
 
+.certificador {
+  font-size: 10px;
+  line-height: 1.4;
+  max-width: 60%;
+
+  border: 1.5px solid var(--azul-secundario);
+  padding: 10px;
+  border-radius: 8px;
+  background: #f8faff;
+}
+
+.qr {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#qr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.fel-logo {
+  width: 70px;
+  opacity: 0.85;
+}
+
+/* ==========================
+   IMPRESIÓN CARTA PERFECTA 1 HOJA
+========================== */
 @media print {
 
   @page {
     size: letter;
-    margin: 0;
+    margin: 0; /* 🔥 control total de la hoja */
   }
 
   html, body {
-    width: 21.59cm;
-    height: 27.94cm;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: white !important;
+    width: 216mm;
+    height: 279mm;
+    margin: 0;
+    padding: 0;
   }
 
   body {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    background: #fff !important;
   }
 
-  .acciones {
-    display: none !important;
-  }
-
+  /* FACTURA COMO HOJA COMPLETA */
   .factura {
-    width: 100% !important;
-    height: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 1.2cm !important;
-    box-sizing: border-box !important;
-    border: none !important;
+    width: 100%;
+    height: 100%;
+    padding: 8mm; /* 🔥 espacio interno controlado */
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
-  table, tr, td, div {
+  /* EVITAR QUE SE ROMPA EN 2 PÁGINAS */
+  .factura, table, tr, td {
     page-break-inside: avoid !important;
+  }
+
+  /* COLORES ACTIVADOS */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* CERTIFICADOR BONITO */
+  .certificador {
+    background: #f8faff !important;
+    border: 1.5px solid #1a4fa3 !important;
+  }
+
+  /* TABLA LIMPIA */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  table, th, td {
+    border-color: #000 !important;
+  }
+
+  /* QR NÍTIDO */
+  #qr canvas {
+    image-rendering: pixelated;
+  }
+
+  /* EVITAR SCROLL/EXCESO */
+  body {
+    overflow: hidden;
   }
 }
