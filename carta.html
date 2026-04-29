@@ -1,63 +1,88 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-GT">
 <head>
   <meta charset="UTF-8">
   <title>Factura DiAR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="carta.css">
 </head>
+
 <body>
 
 <div class="layout">
 
-  <!-- PANEL IZQUIERDO -->
-  <div class="acciones">
-    <h1>FACTURA DIAR</h1>
+  <!-- PANEL -->
+  <div class="panel">
 
-    <button onclick="document.getElementById('archivoXML').click()">CARGAR</button>
-    <input type="file" id="archivoXML" accept=".xml" style="display:none" onchange="cargarXML()">
+    <h2>FACTURA DIAR</h2>
 
-    <button onclick="descargarPDF()">DESCARGAR</button>
+    <button onclick="document.getElementById('archivoXML').click()">CARGAR XML</button>
+    <input type="file" id="archivoXML" accept=".xml" hidden onchange="cargarXML()">
 
-    <div class="qr-panel">
-      QR DIAR
-      <img src="QRDIAR.png" class="qr-img">
-    </div>
+    <button onclick="descargarPDF()">DESCARGAR PDF</button>
+
+    <hr>
+
+    <input type="text" id="inputVendedor" placeholder="vendedor">
+    <input type="text" id="inputPAGO" placeholder="Forma de pago">
+    <input type="text" id="inputCLIENTE" placeholder="Codigo cliente">
+
+    <button onclick="agregarItem()">AGREGAR</button>
+
   </div>
 
   <!-- FACTURA -->
   <div class="factura" id="factura">
 
-    <!-- HEADER -->
     <div class="header">
+
       <div class="logo">
-        <img src="DIAR.png">
+        <img src="KEILER.jpeg">
       </div>
 
-      <div class="titulo">
-        <h1>FACTURA</h1>
-        <p id="autorizacion">No. Autorización: ______</p>
-        <p id="fecha">Fecha: ______</p>
-        <p id="hora">Hora: ______</p>
+      <div class="empresa">
+        DIAR DISEÑO ARQUITECTONICO<br>
+        NIT: 81321686<br>
+        3 AVENIDA 5-4 COLONIA SAN JOSE<br>
+        VILLA NUEVA, GUATEMALA<br>
+        INFO@DIAR.COM.GT
       </div>
-    </div>
 
-    <!-- EMPRESA -->
-    <div class="empresa">
-      <strong>DiAR Arquitectura Publicitaria</strong><br>
-      NIT: 1234567-8<br>
-      Dirección: VILLA NUEVA, GUATEMALA
+      <div class="factura-box">
+        <strong>FACTURA ELECTRONICA</strong><br><br>
+        Serie: <span id="serie"></span><br>
+      No. DTE: <span id="numero"></span><br>
+      Fecha: <span id="fechaHoraEmision"></span>
+      </div>
+
     </div>
 
     <!-- CLIENTE -->
-    <div class="cliente">
-      <strong>DATOS DEL CLIENTE</strong><br><br>
-      Nombre: <span id="nombreReceptor">N/A</span><br>
-      NIT: <span id="nitReceptor">N/A</span><br>
-      Dirección: <span id="direccionReceptor">N/A</span>
+    <div class="cliente-box">
+
+      <div class="cliente-titulo">DATOS DEL CLIENTE</div>
+
+      <div class="cliente-body">
+
+        <div class="cliente-col">
+          <p>Cliente: <span id="nombreReceptor"></span></p>
+          <p>NIT/CUI: <span id="nitReceptor"></span></p>
+          <p>Dirección: <span id="direccionReceptor"></span></p>
+        </div>
+
+        <div class="cliente-col">
+          <p>Código: <span id="codigoCliente"></span></p>
+          <p>Vendedor: <span id="vendedor"></span></p>
+          <p>Pago: <span id="formaPago"></span></p>
+        </div>
+
+      </div>
+
     </div>
 
     <!-- TABLA -->
-    <table id="tabla-servicios">
+    <table class="tabla">
+
       <thead>
         <tr>
           <th>CANT.</th>
@@ -66,39 +91,64 @@
           <th>SUBTOTAL</th>
         </tr>
       </thead>
-      <tbody id="items"></tbody>
+
+      <tbody id="items">
+        <tr class="fila-relleno">
+          <td></td><td></td><td></td><td></td>
+        </tr>
+      </tbody>
+
+      <tfoot>
+        <tr>
+          <td colspan="2"></td>
+          <td><strong>Subtotal</strong></td>
+          <td id="subtotal">Q 0.00</td>
+        </tr>
+
+        <tr>
+          <td colspan="2"></td>
+          <td><strong>IVA</strong></td>
+          <td id="iva">Q 0.00</td>
+        </tr>
+
+        <tr class="total-final">
+          <td colspan="2"></td>
+          <td><strong>Total</strong></td>
+          <td id="total">Q 0.00</td>
+        </tr>
+      </tfoot>
+
     </table>
 
-    <!-- TOTALES -->
-    <div class="totales">
-      <table>
-        <tr><td>Subtotal</td><td id="subtotal">Q 0.00</td></tr>
-        <tr><td>IVA</td><td id="iva">Q 0.00</td></tr>
-        <tr class="total-final"><td>Total</td><td id="total">Q 0.00</td></tr>
-      </table>
-    </div>
-
     <div class="letras">
-      Total en letras: <span id="total-letras">Cero quetzales</span>
+      <span id="total-letras"></span>
     </div>
 
-    <!-- FOOTER -->
     <div class="footer">
-      <div class="qr" id="qr"></div>
 
-      <div class="firma">
-        <div class="firma-linea"></div>
-        Firma autorizada
+      
+ <div class="certificador">
+  <strong>CERTIFICADOR</strong><br><br>
+
+  NIT Certificador: <span id="nitCertificador">—</span><br>
+  Autorización: <span id="autorizacion">—</span><br>
+  Hora: <span id="hora">—</span><br>
+
+  Sujeto a pagos trimestrales ISR
+</div>
+
+      <div class="qr">
+        <div id="qr"></div>
+        <img src="logofel.png" class="fel-logo">
       </div>
+
     </div>
 
   </div>
+
 </div>
 
-<!-- LIBRERÍA QR -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-<!-- TU JS -->
 <script src="carta.js"></script>
 
 </body>
