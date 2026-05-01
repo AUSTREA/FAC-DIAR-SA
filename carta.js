@@ -10,25 +10,6 @@ function limpiarNumero(valor) {
 }
 
 // ==========================
-// FECHA FACTURA (SIEMPRE HOY)
-// ==========================
-function setFechaFactura() {
-  const hoy = new Date();
-
-  const fechaEl = document.getElementById("fecha");
-  if (fechaEl) {
-    fechaEl.textContent = hoy.toLocaleDateString("es-GT");
-  }
-
-  const horaEl = document.getElementById("hora");
-  if (horaEl) {
-    horaEl.textContent = hoy.toLocaleTimeString("es-GT");
-  }
-}
-
-window.addEventListener("load", setFechaFactura);
-
-// ==========================
 // FORMATO QUETZALES
 // ==========================
 function formatoQuetzal(num) {
@@ -151,25 +132,27 @@ function cargarXML() {
       return;
     }
 
+    // ==========================
     // FECHA Y HORA
+    // ==========================
     const fechaHora =
       xmlDoc.getElementsByTagName("dte:DatosGenerales")[0]
         ?.getAttribute("FechaHoraEmision");
 
     if (fechaHora) {
       const partes = fechaHora.split("T");
+      const fecha = partes[0] || "";
+      const hora = partes[1]?.split("-")[0] || "";
 
-      const fecha = partes[0] || "—";
-      const hora = partes[1]?.split("-")[0] || "—";
-
-      document.getElementById("fechaHoraEmision").textContent = fecha;
-      document.getElementById("hora").textContent = hora;
+      document.getElementById("hora").textContent =
+        `${fecha} ${hora}`;
     } else {
-      document.getElementById("fechaHoraEmision").textContent = "—";
       document.getElementById("hora").textContent = "—";
     }
 
+    // ==========================
     // CLIENTE
+    // ==========================
     const receptor =
       xmlDoc.getElementsByTagName("dte:Receptor")[0];
 
@@ -193,7 +176,9 @@ function cargarXML() {
     document.getElementById("direccionReceptor").textContent =
       direccionArray.length ? direccionArray.join(", ") : "";
 
+    // ==========================
     // ITEMS
+    // ==========================
     const items = xmlDoc.getElementsByTagName("dte:Item");
     const tbody = document.getElementById("items");
 
@@ -227,7 +212,9 @@ function cargarXML() {
       tbody.insertBefore(fila, relleno);
     }
 
+    // ==========================
     // TOTALES
+    // ==========================
     const subtotalXML =
       limpiarNumero(xmlDoc.getElementsByTagName("dte:MontoGravable")[0]?.textContent);
 
@@ -249,52 +236,49 @@ function cargarXML() {
     document.getElementById("total-letras").textContent =
       numeroALetras(totalXML);
 
-    // =========================
-// CERTIFICADOR
-// =========================
+    // ==========================
+    // CERTIFICADOR + DTE
+    // ==========================
+    const ns = "http://www.sat.gob.gt/dte/fel/0.2.0";
 
-// Namespace FEL SAT
-const ns = "http://www.sat.gob.gt/dte/fel/0.2.0";
+    const nodoAut =
+      xmlDoc.getElementsByTagNameNS(ns, "NumeroAutorizacion")[0];
 
-// NIT Certificador
-const nitCertificador =
-  xmlDoc.getElementsByTagNameNS(ns, "NITCertificador")[0];
+    document.getElementById("nitCertificador").textContent =
+      xmlDoc.getElementsByTagNameNS(ns, "NITCertificador")[0]?.textContent || "—";
 
-document.getElementById("nitCertificador").textContent =
-  nitCertificador?.textContent || "—";
+    document.getElementById("autorizacion").textContent =
+      nodoAut?.textContent?.trim() || "—";
 
-// Número de autorización
-const nodoAut =
-  xmlDoc.getElementsByTagNameNS(ns, "NumeroAutorizacion")[0];
+    document.getElementById("serie").textContent =
+      nodoAut?.getAttribute("Serie") || "—";
 
-document.getElementById("autorizacion").textContent =
-  nodoAut?.textContent?.trim() || "—";
+    // 🔥 FIX DTE AQUÍ
+    const numeroAttr = nodoAut?.getAttribute("Numero");
+    const numeroTexto = nodoAut?.textContent?.trim();
 
-// Serie
-const serie = nodoAut?.getAttribute("Serie");
-document.getElementById("serie").textContent =
-  serie || "—";
+    const numeroFinal =
+      numeroAttr || numeroTexto || "—";
 
-// Número
-const numero = nodoAut?.getAttribute("Numero");
-document.getElementById("numero").textContent =
-  numero || "—";
+    const numeroSpan = document.getElementById("numero");
+    if (numeroSpan) {
+      numeroSpan.textContent = numeroFinal;
+    }
 
+    // ==========================
+    // CERTIFICADOR NOMBRE
+    // ==========================
+    const dsNS = "http://www.w3.org/2000/09/xmldsig#";
 
-// =========================
-// CERTIFICADOR (X509)
-// =========================
-const dsNS = "http://www.w3.org/2000/09/xmldsig#";
+    const certificado =
+      xmlDoc.getElementsByTagNameNS(dsNS, "X509IssuerName")[0];
 
-const certificado =
-  xmlDoc.getElementsByTagNameNS(dsNS, "X509IssuerName")[0];
+    document.getElementById("certificador").textContent =
+      certificado?.textContent?.replace(/^CN=/, "") || "—";
 
-const textoCert = certificado?.textContent?.trim() || "—";
-
-document.getElementById("certificador").textContent =
-  textoCert.replace(/^CN=/, "");
-    
-    // QR (FIX incluido)
+    // ==========================
+    // QR
+    // ==========================
     const uuid = nodoAut?.textContent?.trim();
 
     const emisor =
@@ -356,6 +340,6 @@ function descargarPDF() {
       ventana.focus();
       ventana.print();
       ventana.close();
-    }, 700); // 🔥 importante para carga completa
+    }, 700);
   };
 }
