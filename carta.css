@@ -371,3 +371,31 @@ body {
     overflow: hidden;
   }
 }
+.hoy {
+  display: block;              /* antes inline-block */
+  width: fit-content;          /* que se ajuste al contenido */
+  margin-left: auto;           /* 🔥 esto lo manda a la derecha */
+  padding: 8px 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  border: 1.5px solid #1a4fa3;
+  border-radius: 6px;
+
+  background: var(--azul-principal);
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: bold;
+
+  text-align: center;
+  letter-spacing: 0.5px;
+
+  box-shadow: 1px 2px 5px rgba(0,0,0,0.12);
+}
+
+/* fecha dentro */
+.hoy span {
+  color: #ffffff;
+  margin-left: 5px;
+}
