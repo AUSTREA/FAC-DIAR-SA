@@ -343,3 +343,20 @@ function descargarPDF() {
     }, 700);
   };
 }
+// ==========================
+// FECHA ACTUAL
+// ==========================
+function ponerFechaActual() {
+  const hoy = new Date();
+
+  const opciones = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  };
+
+  document.getElementById("hoy").textContent =
+    hoy.toLocaleDateString("es-GT", opciones);
+}
+
+window.addEventListener("DOMContentLoaded", ponerFechaActual);
